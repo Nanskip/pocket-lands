@@ -15,6 +15,7 @@ Models = {
 
 Textures = {
     intro_logo = "textures/intro_logo.png",
+    cursor_outline = "textures/cursor_outline.png",
 }
 
 Sounds = {
