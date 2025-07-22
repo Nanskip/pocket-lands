@@ -45,7 +45,7 @@ worldgen.generateFlatLand = function(config)
             tree.Scale = 0.25
             tree.Rotation.Y = math.random(0, 360) * math.pi / 180
 
-            tree.Shadow = true
+            --tree.Shadow = true
         end
     end
 
@@ -61,7 +61,7 @@ worldgen.generateFlatLand = function(config)
             rock.Scale = 0.75
             rock.Rotation.Y = math.random(0, 360) * math.pi / 180
 
-            rock.Shadow = true
+            --rock.Shadow = true
         end
     end
 
