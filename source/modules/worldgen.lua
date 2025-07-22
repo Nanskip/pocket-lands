@@ -59,7 +59,7 @@ worldgen.generateFlatLand = function(config)
             return
         end
 
-        local rock = models.stone[1]:Copy()
+        local rock = models.rock[1]:Copy()
         objects[x][z] = "rock"
         rock:SetParent(terrain)
         rock.Position = Number3(x+0.5, y+1, z+0.5) * cfg.size

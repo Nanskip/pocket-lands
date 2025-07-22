@@ -8,7 +8,7 @@ Modules = {
 
 Models = {
     tree = "models/tree.glb",
-    stone = "models/stone.glb"
+    rock = "models/rock.glb"
 }
 
 Textures = {
