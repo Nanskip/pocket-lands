@@ -212,7 +212,7 @@ output_file = "build/build.lua"
 
 # IMPORTANT
 # Make sure to update the github_base_url to the correct branch, repository, and path.
-github_base_url = "https://raw.githubusercontent.com/Nanskip/NaN-GDK/refs/heads/main"
+github_base_url = "https://raw.githubusercontent.com/Nanskip/pocket-lands/refs/heads/main"
 
 build_project(source_directory, output_file, github_base_url)
 print("Build finished.")

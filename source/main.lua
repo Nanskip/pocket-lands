@@ -7,11 +7,11 @@ Modules = {
 }
 
 Models = {
-
+    tree = "models/tree.glb",
 }
 
 Textures = {
-    intro_logo = "textures/intro_logo.gif",
+    intro_logo = "textures/intro_logo.png",
 }
 
 Sounds = {
