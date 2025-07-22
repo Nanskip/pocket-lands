@@ -4,6 +4,7 @@ Modules = {
     debug = "modules/debug.lua",
     mathlib = "modules/mathlib.lua",
     advanced_ui = "modules/advanced_ui.lua",
+    game_controller = "modules/game_controller.lua"
 }
 
 Models = {

@@ -122,6 +122,8 @@ loading_screen.finish = function(self)
         function()
             sound:Destroy()
         end)
+
+    game_controller:init()
 end
 
 return loading_screen
