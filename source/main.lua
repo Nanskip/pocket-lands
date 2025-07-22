@@ -11,7 +11,7 @@ Models = {
 }
 
 Textures = {
-    intro_logo = "textures/intro_logo.png",
+    intro_logo = "textures/intro_logo.gif",
 }
 
 Sounds = {

@@ -62,7 +62,7 @@ loading_screen.intro = function(self)
     self.intro_logo = _UIKIT:createFrame()
     local logo = self.intro_logo
     logo.Color = Color(255, 255, 255)
-    logo:setImage(textures.intro_logo)
+    logo.background.Image = textures.intro_logo
     logo.Size = {256, 256}
     logo.pos = {
         Screen.Width/2 - logo.Width/2,
