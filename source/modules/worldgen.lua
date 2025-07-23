@@ -27,7 +27,9 @@ worldgen.generateFlatLand = function(config)
     for x = 0, cfg.scale-1 do
         objects[x] = {}
         for y = 0, cfg.scale-1 do
-            local block = Block(Color(75, 189, 67), Number3(x, 0, y))
+            local randomDiff = math.random(-3, 3)*2
+            local color = Color(75 + randomDiff, 189 + randomDiff, 67 + randomDiff)
+            local block = Block(color, Number3(x, 0, y))
 
             terrain:AddBlock(block)
         end

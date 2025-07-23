@@ -6,12 +6,15 @@ game_controller.init = function()
     _CAMERA_ROT = Rotation(1, 0, 0)
     Camera:SetModeFree()
     _TERRAIN = worldgen.generateFlatLand()
+    _TERRAIN.Physics = PhysicsMode.StaticPerBlock
 
     _DX = 0
     _DY = 0
     
-    _CURSOR_QUAD = models.cursor_outline[1]:Copy()
-    _CURSOR_QUAD.Scale = 15
+    _CURSOR_QUAD = Quad()
+    _CURSOR_QUAD.Scale = 5
+    _CURSOR_QUAD.Color = Color(255, 255, 255, 127)
+    _CURSOR_QUAD.Rotation.X = math.pi/2
 
     _CURSOR_QUAD:SetParent(World)
 
@@ -35,24 +38,70 @@ game_controller.start = function()
         _CAMERA_POS = _CAMERA_POS + (Number3(_DX, 0, _DY) * dt * 20)
 
         if _HIT_POS ~= nil and _HIT_OBJECT ~= nil then
-            _CURSOR_QUAD.Position = Number3(_HIT_POS.X//5*5, 20, _HIT_POS.Z//5*5)
+            _CURSOR_QUAD.Position = Number3((_HIT_POS.X)//5*5, 15.02, (_HIT_POS.Z)//5*5)
+        end
+
+        if game_controller.last_camera_pos ~= Number3(_CAMERA_POS.X, _CAMERA_POS.Y, _CAMERA_POS.Z)
+        and game_controller.last_camera_pos ~= nil then
+            local difference = Number3(
+                (game_controller.last_camera_pos.X - _CAMERA_POS.X),
+                (game_controller.last_camera_pos.Y - _CAMERA_POS.Y),
+                (game_controller.last_camera_pos.Z - _CAMERA_POS.Z)
+            )
+            _HIT_POS = Number3(
+                (_HIT_POS.X - difference.X + 2.5),
+                (_HIT_POS.Y - difference.Y + 2.5),
+                (_HIT_POS.Z - difference.Z + 2.5)
+            )
+            game_controller.last_camera_pos = Number3(
+                (_CAMERA_POS.X + 2.5),
+                (_CAMERA_POS.Y + 2.5),
+                (_CAMERA_POS.Z + 2.5)
+            )
+        end
+
+        if _HIT_POS ~= nil then
+            _CURSOR_POS = Number3(_HIT_POS.X//5 + (_TERRAIN.Width//2), 0, _HIT_POS.Z//5 + (_TERRAIN.Depth//2))
         end
     end
 end
 
 game_controller.moveListener = LocalEvent:Listen(LocalEvent.Name.PointerMove, function(pe)
-    game_controller.pointer = { pe.X, pe.Y }
+    game_controller.pointer = pe
+    for key, value in pairs(pe) do
+        print(key, value)
+    end
 
-    -- Получаем луч от курсора
-    local ray = Camera:ScreenToRay(Number2(pe.X, pe.Y))
-    local impact = ray:Cast()
+    game_controller.cast_ray(pe)
+end)
 
-    if impact then
-        local hit_pos = ray.Origin + ray.Direction * impact.Distance
-        _HIT_POS = hit_pos
-        _HIT_OBJECT = impact.Object
-    else
-        _HIT_POS = nil
-        _HIT_OBJECT = nil
+game_controller.clickListener = LocalEvent:Listen(LocalEvent.Name.PointerClick, function(pe)
+    if _CURSOR_POS ~= nil then
+        local item = _TERRAIN.objects[_CURSOR_POS.X][_CURSOR_POS.Z]
+        if item == "nothing" or item == nil then
+            if not _HAS_FLAG then
+                --_HAS_FLAG = true
+                buildings:spawn("flag", {_CURSOR_POS.X, _CURSOR_POS.Z})
+            end
+        else
+            print("There is an " .. item .. " here!")
+        end
     end
 end)
+
+game_controller.cast_ray = function(pe)
+    if pe ~= nil and _CAMERA_POS ~= nil then
+        local impact = pe:CastRay()
+        game_controller.pointer = pe
+        game_controller.last_camera_pos = Number3(_CAMERA_POS.X, _CAMERA_POS.Y, _CAMERA_POS.Z)
+
+        if impact and impact.Block then
+            local hit_pos = impact.Block.Position
+            _HIT_POS = hit_pos
+            _HIT_OBJECT = impact.Object
+        else
+            _HIT_POS = nil
+            _HIT_OBJECT = nil
+        end
+    end
+end

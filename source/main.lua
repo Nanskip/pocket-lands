@@ -4,13 +4,15 @@ Modules = {
     debug = "modules/debug.lua",
     mathlib = "modules/mathlib.lua",
     advanced_ui = "modules/advanced_ui.lua",
-    game_controller = "modules/game_controller.lua"
+    game_controller = "modules/game_controller.lua",
+    buildings = "modules/buildings.lua",
 }
 
 Models = {
     tree = "models/tree.glb",
     rock = "models/rock.glb",
     flag = "models/flag.glb",
+    cursor_outline = "models/cursor_outline.glb",
 }
 
 Textures = {
