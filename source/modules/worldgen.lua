@@ -2,7 +2,7 @@ local worldgen = {}
 
 worldgen.generateFlatLand = function(config)
     local defaulConfig = {
-        scale = 50, -- scale of the land, width and height
+        scale = _MAP_SIZE, -- scale of the land, width and height
         size = 5, -- size of mutableShape object
         treeCount = 300, -- number of trees per terrain
         rockCount = 200, -- number of rocks per terrain

@@ -3,7 +3,11 @@ local buildings = {}
 buildings.spawn = function(self, name, pos)
     local building = Object()
     building.name = name
-    building.Position = Number3(pos[1] - _TERRAIN.Width//2, 15, pos[2] - _TERRAIN.Depth//2)
+    building.Position = Number3(
+        (pos[1] - _TERRAIN.Width//2 + 2.5)*5,
+        15,
+        (pos[2] - _TERRAIN.Depth//2 + 2.5)*5
+    )
     building.Rotation = Rotation(0, 0, 0)
 
     building.mesh = self:getBuilding(name, building)
@@ -14,9 +18,11 @@ end
 
 buildings.getBuilding = function(self, name, building)
     local mesh = models[buildings.list[name].name][1]:Copy()
-    for i = 2, buildings.list[name].objects do
-        local object = models[buildings.list[name].name][i]:Copy()
-        object:SetParent(building)
+    if buildings.list[name].objects ~= 1 then
+        for i = 2, buildings.list[name].objects do
+            local object = models[buildings.list[name].name][i]:Copy()
+            object:SetParent(building)
+        end
     end
     mesh.Rotation = Rotation(0, 0, 0)
 
@@ -26,6 +32,7 @@ end
 buildings.list = {
     flag = {
         name = "flag",
-        objects = 2
+        objects = 1,
+        scale = 1.5
     },
 }

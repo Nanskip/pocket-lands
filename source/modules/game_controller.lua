@@ -5,6 +5,8 @@ game_controller.init = function()
     _CAMERA_POS = Number3(0, 0, 0)
     _CAMERA_ROT = Rotation(1, 0, 0)
     Camera:SetModeFree()
+
+    _MAP_SIZE = 50
     _TERRAIN = worldgen.generateFlatLand()
     _TERRAIN.Physics = PhysicsMode.StaticPerBlock
 
@@ -80,8 +82,13 @@ game_controller.clickListener = LocalEvent:Listen(LocalEvent.Name.PointerClick, 
         local item = _TERRAIN.objects[_CURSOR_POS.X][_CURSOR_POS.Z]
         if item == "nothing" or item == nil then
             if not _HAS_FLAG then
-                --_HAS_FLAG = true
+                _HAS_FLAG = true
                 buildings:spawn("flag", {_CURSOR_POS.X, _CURSOR_POS.Z})
+                _TERRAIN.objects[_CURSOR_POS.X][_CURSOR_POS.Z] = "flag"
+
+                _PLAYER_ZONE = zone_manager:createZone("Player", Color(255, 255, 255))
+                zone_manager:addLand(_PLAYER_ZONE, _CURSOR_POS.X, _CURSOR_POS.Z)
+                zone_manager:showZone(_PLAYER_ZONE)
             end
         else
             print("There is an " .. item .. " here!")
