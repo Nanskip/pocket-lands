@@ -68,6 +68,30 @@ game_controller.start = function()
     end
 end
 
+game_controller.captureLand = function(self, x, y)
+    _HAS_FLAG = true
+    _TERRAIN.objects[_CURSOR_POS.X][_CURSOR_POS.Z] = "flag"
+
+    _PLAYER_ZONE = zone_manager:createZone("Player", Color(255, 255, 255))
+    zone_manager:addLand(_PLAYER_ZONE, _CURSOR_POS.X, _CURSOR_POS.Z)
+
+    -- capture all adjacent lands on the horizontal and vertical
+    zone_manager:addLand(_PLAYER_ZONE, _CURSOR_POS.X-1, _CURSOR_POS.Z)
+    zone_manager:addLand(_PLAYER_ZONE, _CURSOR_POS.X+1, _CURSOR_POS.Z)
+    zone_manager:addLand(_PLAYER_ZONE, _CURSOR_POS.X, _CURSOR_POS.Z-1)
+    zone_manager:addLand(_PLAYER_ZONE, _CURSOR_POS.X, _CURSOR_POS.Z+1)
+
+    -- capture all adjacent lands on the diagonal
+    zone_manager:addLand(_PLAYER_ZONE, _CURSOR_POS.X-1, _CURSOR_POS.Z-1)
+    zone_manager:addLand(_PLAYER_ZONE, _CURSOR_POS.X-1, _CURSOR_POS.Z+1)
+    zone_manager:addLand(_PLAYER_ZONE, _CURSOR_POS.X+1, _CURSOR_POS.Z-1)
+    zone_manager:addLand(_PLAYER_ZONE, _CURSOR_POS.X+1, _CURSOR_POS.Z+1)
+
+    zone_manager:showZone(_PLAYER_ZONE)
+
+    _PLAYER_ZONE.buildings[_CURSOR_POS.X][_CURSOR_POS.Z] = buildings:spawn("flag", {_CURSOR_POS.X, _CURSOR_POS.Z})
+end
+
 game_controller.moveListener = LocalEvent:Listen(LocalEvent.Name.PointerMove, function(pe)
     game_controller.pointer = pe
     for key, value in pairs(pe) do
@@ -82,13 +106,7 @@ game_controller.clickListener = LocalEvent:Listen(LocalEvent.Name.PointerClick, 
         local item = _TERRAIN.objects[_CURSOR_POS.X][_CURSOR_POS.Z]
         if item == "nothing" or item == nil then
             if not _HAS_FLAG then
-                _HAS_FLAG = true
-                buildings:spawn("flag", {_CURSOR_POS.X, _CURSOR_POS.Z})
-                _TERRAIN.objects[_CURSOR_POS.X][_CURSOR_POS.Z] = "flag"
-
-                _PLAYER_ZONE = zone_manager:createZone("Player", Color(255, 255, 255))
-                zone_manager:addLand(_PLAYER_ZONE, _CURSOR_POS.X, _CURSOR_POS.Z)
-                zone_manager:showZone(_PLAYER_ZONE)
+                game_controller:captureLand(_CURSOR_POS.X, _CURSOR_POS.Z)
             end
         else
             print("There is an " .. item .. " here!")

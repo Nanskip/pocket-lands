@@ -6,6 +6,8 @@ Modules = {
     advanced_ui = "modules/advanced_ui.lua",
     game_controller = "modules/game_controller.lua",
     buildings = "modules/buildings.lua",
+    ui_manager = "modules/ui_manager.lua",
+    zone_manager = "modules/zone_manager.lua",
 }
 
 Models = {
@@ -18,6 +20,8 @@ Models = {
 Textures = {
     intro_logo = "textures/intro_logo.png",
     cursor_outline = "textures/cursor_outline.png",
+    button_template = "textures/button_template.png",
+    framee_template = "textures/frame_template.png",
 }
 
 Sounds = {

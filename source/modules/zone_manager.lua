@@ -13,8 +13,10 @@ zone_manager.createZone = function(self, name, color)
 
     for x = 1, _MAP_SIZE do
         zone.lands[x] = {}
+        zone.buildings[x] = {}
         for y = 1, _MAP_SIZE do
             zone.lands[x][y] = false
+            zone.buildings[x][y] = nil
         end
     end
 
@@ -26,25 +28,38 @@ zone_manager.addLand = function(self, zone, x, y)
 end
 
 zone_manager.showZone = function(self, zone)
+    for key, value in pairs(zone.borders) do
+        value:SetParent(nil)
+        value = nil
+    end
     for x = 1, _MAP_SIZE do
         for y = 1, _MAP_SIZE do
             if zone.lands[x][y] then
-                -- calculate borders
-                local left = x - 1
-                local right = x + 1
-                local top = y - 1
-                local bottom = y + 1
+                -- spawn transparent quad to show land color
+                local quad = Quad()
+                quad.Color = zone.color
+                quad.Color.A = 50
+                quad.Scale = Number3(1, 1, 1)*5
+                quad.Rotation.X = math.pi/2
+                quad.Position = Number3(
+                    (x - _TERRAIN.Width//2)*5,
+                    15.005,
+                    (y - _TERRAIN.Depth//2)*5
+                )
+                zone.borders[#zone.borders+1] = quad
+                quad:SetParent(World)
 
-                if zone.lands[left] == false then
+                -- calculate borders
+                if zone.lands[x-1][y] == false then
                     zone.borders[#zone.borders+1] = zone_manager:spawnBorder(zone, x, y, "left")
                 end
-                if zone.lands[right] == false then
+                if zone.lands[x+1][y] == false then
                     zone.borders[#zone.borders+1] = zone_manager:spawnBorder(zone, x, y, "right")
                 end
-                if zone.lands[top] == false then
+                if zone.lands[x][y+1] == false then
                     zone.borders[#zone.borders+1] = zone_manager:spawnBorder(zone, x, y, "top")
                 end
-                if zone.lands[bottom] == false then
+                if zone.lands[x][y-1] == false then
                     zone.borders[#zone.borders+1] = zone_manager:spawnBorder(zone, x, y, "bottom")
                 end
             end
@@ -58,9 +73,12 @@ zone_manager.spawnBorder = function(self, zone, x, y, direction)
     if direction == "left" then
         pos_offset.X = -1
     end
+    if direction == "right" then
+        pos_offset.X = -0.05
+    end
     if direction == "top" then
-        pos_offset.Y = 1
-        rot_offset.Y = math.pi/2
+        pos_offset.Z = 1-0.05
+        rot_offset.Y = -math.pi/2
     end
     if direction == "bottom" then
         rot_offset.Y = -math.pi/2
@@ -68,8 +86,12 @@ zone_manager.spawnBorder = function(self, zone, x, y, direction)
     local quad = Quad()
 
     quad.Color = zone.color
-    quad.Scale = Number3(0.1, 1, 1)*5
-    quad.Position = Number3(x, 15.01, y)*5 + pos_offset
+    quad.Scale = Number3(0.05, 1, 1)*5
+    quad.Position = Number3(
+        (x - _TERRAIN.Width//2)*5 + 5,
+        15.01,
+        (y - _TERRAIN.Depth//2)*5
+    ) + (pos_offset*5)
     quad.Rotation = Rotation(math.pi/2, 0, 0) + rot_offset
 
     quad:SetParent(World)

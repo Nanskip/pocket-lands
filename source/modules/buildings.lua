@@ -4,9 +4,9 @@ buildings.spawn = function(self, name, pos)
     local building = Object()
     building.name = name
     building.Position = Number3(
-        (pos[1] - _TERRAIN.Width//2 + 2.5)*5,
+        (pos[1] - _TERRAIN.Width//2)*5 + 2.5,
         15,
-        (pos[2] - _TERRAIN.Depth//2 + 2.5)*5
+        (pos[2] - _TERRAIN.Depth//2)*5 + 2.5
     )
     building.Rotation = Rotation(0, 0, 0)
 
@@ -14,6 +14,18 @@ buildings.spawn = function(self, name, pos)
     building.mesh:SetParent(building)
 
     building:SetParent(World)
+
+    return building
+end
+
+buildings.clear = function(self)
+    for _, building in ipairs(self.buildings) do
+        self:despawn(building)
+    end
+end
+
+buildings.despawn = function(self, building)
+    building:Remove()
 end
 
 buildings.getBuilding = function(self, name, building)
