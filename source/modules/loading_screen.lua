@@ -124,6 +124,7 @@ loading_screen.finish = function(self)
         end)
 
     game_controller:init()
+    ui_manager:init()
 end
 
 return loading_screen

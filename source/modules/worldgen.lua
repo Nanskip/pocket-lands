@@ -72,6 +72,7 @@ worldgen.generateFlatLand = function(config)
     terrain:SetParent(World)
     terrain.Pivot = Number3(terrain.Width / 2, -2, terrain.Depth / 2)
     terrain.objects = objects
+    terrain.isTerrain = true
 
     return terrain
 end

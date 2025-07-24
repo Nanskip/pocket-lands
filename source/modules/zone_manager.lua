@@ -8,6 +8,7 @@ zone_manager.createZone = function(self, name, color)
         name = name or "unnamed_zone",
         color = color or Color(255, 255, 255),
         lands = {},
+        buildings = {},
         borders = {},
     }
 

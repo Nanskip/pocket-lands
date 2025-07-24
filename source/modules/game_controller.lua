@@ -120,7 +120,7 @@ game_controller.cast_ray = function(pe)
         game_controller.pointer = pe
         game_controller.last_camera_pos = Number3(_CAMERA_POS.X, _CAMERA_POS.Y, _CAMERA_POS.Z)
 
-        if impact and impact.Block then
+        if impact and impact.Block and impact.Object.isTerrain then
             local hit_pos = impact.Block.Position
             _HIT_POS = hit_pos
             _HIT_OBJECT = impact.Object
